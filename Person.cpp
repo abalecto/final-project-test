@@ -18,18 +18,25 @@
 using namespace std;
 
 Person::Person(string inputString) : Person() {
-    //TODO: Implement non-default constructor
+    stringstream ss(inputString);
+    char dummy;
+    ss >> turn >> dummy >> currentFloor >> dummy >> 
+        targetFloor >> dummy >> angerLevel;
 }
 
 bool Person::tick(int currentTime) {
-    //TODO: Implement tick
-
-    //Returning false to prevent compilation error
+    if (currentTime % TICKS_PER_ANGER_INCREASE == 0) {
+        angerLevel += 1;
+    }
+    if (angerLevel >= MAX_ANGER) {
+        return true;
+    }
     return false;
 }
 
 void Person::print(ostream &outs) {    
-    //TODO: Implement print
+    cout << "f" << currentFloor << "t" << targetFloor << "a" << angerLevel;
+    return;
 }
 
 //////////////////////////////////////////////////////

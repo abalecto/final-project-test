@@ -12,27 +12,80 @@
 
 
 #include "Floor.h"
-
+#include <algorithm>
 using namespace std;
 
 int Floor::tick(int currentTime) {
-    //TODO: Implement tick
+	// Record who exploded with index of array people
+	int indicesToRemove[MAX_PEOPLE_PER_FLOOR];
+	// Keep track of number of people explode
+	int count = 0;
+	// Access each person in the list People
+	for (int i = 0; i < numPeople; i++) {
+		// Increment each person's tick and check if person exploded
+		if (people[i].tick(currentTime)) {
+			indicesToRemove[count] = i;
+			count += 1;
+		}
 
-    //returning 0 to prevent compilation error
+	}
+	// Remove people who exploded with anger
+	removePeople(indicesToRemove, count);
     return 0;
 }
 
 void Floor::addPerson(Person newPerson, int request) {
-    //TODO: Implement addPerson
+	// Add new person to people if there is still room
+	if (numPeople < MAX_PEOPLE_PER_FLOOR) {
+		people[numPeople] = newPerson;
+		numPeople += 1;
+	}
+	// If target floor is above current floor
+	if (request > 0) {
+		hasUpRequest = true;
+		hasDownRequest = false;
+	}
+	// If target floor is below current floor
+	else {
+		hasUpRequest = false;
+		hasDownRequest = true;
+	}
 }
 
 void Floor::removePeople(const int indicesToRemove[MAX_PEOPLE_PER_FLOOR],
                          int numPeopleToRemove) {
-    //TODO: Implement removePeople
+	// Place holder array for indices to Remove
+	int targetToRemove[MAX_PEOPLE_PER_FLOOR]; 
+	//Copy values into the place holder
+	for (int i = 0; i < numPeopleToRemove; ++i) {
+		targetToRemove[i] = indicesToRemove[i];
+	}
+	// Sort the place holder 
+	sort(targetToRemove, targetToRemove + numPeopleToRemove);
+
+
+	for (int i = 0; i < MAX_PEOPLE_PER_FLOOR; i++) {
+		if (i == targetToRemove[i]) {
+			for (int j = i; j < MAX_PEOPLE_PER_FLOOR - 1; j++) {
+				people[j] = people[j + 1];
+			}
+			for (int k = 0; k < numPeopleToRemove; k++) {
+				targetToRemove[k] = targetToRemove[k] - 1;
+			}
+		}
+	}
+
 }
 
 void Floor::resetRequests() {
-    //TODO: Implement resetRequests
+	for (int i = 0; i < numPeople; i++) {
+		if (people[i].getTargetFloor() > people[i].getCurrentFloor()) {
+			hasUpRequest = true;
+		}
+		else if (people[i].getTargetFloor() < people[i].getCurrentFloor()) {
+			hasDownRequest = true;
+		}
+	}
 }
 
 //////////////////////////////////////////////////////
