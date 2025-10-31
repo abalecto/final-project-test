@@ -31,11 +31,14 @@ using namespace std;
 // declare your test functions here
 void file_check();
 void test_Person();
+void test_Elevator();
+void test_Floor();
 
 void start_tests() {
     //file_check();
-    test_Person();
-
+    //test_Person();
+    //test_Elevator();
+    test_Floor();
     return;
 }
 void file_check() {
@@ -128,11 +131,59 @@ void test_Elevator() {
     
     cout << "Expected: 3, Actual: " << elevator.getCurrentFloor() << endl;
     cout << "Expected: 0, Actual: " << elevator.isServicing() << endl;
-
-
 }
 
 void test_Floor() {
-    
+    cout << "Now testing Elevator class" << endl << endl;
+    Floor f1;
+
+    // Testing addPerson function
+    Person p1("0f5t7a1");
+    Person p2("0f5t2a2");
+    Person p3("0f5t5a4");
+
+
+    f1.addPerson(p1, 2);
+    cout << "Expected: 1, Actual: " << f1.getHasUpRequest() << endl;
+    cout << "Expected: 0, Actual: " << f1.getHasDownRequest() << endl;
+    f1.addPerson(p2, -3);
+    cout << "Expected: 1, Actual: " << f1.getHasUpRequest() << endl;
+    cout << "Expected: 1, Actual: " << f1.getHasDownRequest() << endl;
+
+    // Test removePeople function 
+    Floor f2;
+
+    Person p4("0f5t8a8");
+    Person p5("0f5t3a16");
+    Person p6("0f5t3a32");
+    Person p7("0f5t3a64");
+    Person p8("0f5t3a128");
+    Person p9("0f5t3a256");
+    Person p10("0f5t3a512");
+    f2.addPerson(p1, 2);
+    f2.addPerson(p2, -3);
+    f2.addPerson(p3, 0);
+    f2.addPerson(p4, 3);
+    f2.addPerson(p5, -2);
+    f2.addPerson(p6, -2);
+    f2.addPerson(p7, -2);
+    f2.addPerson(p8, -2);
+    f2.addPerson(p9, -2);
+    f2.addPerson(p10, -2);
+
+
+    f2.prettyPrintFloorLine1(cout);
+    cout << f2.getNumPeople() << endl;
+    int indicesToRemove[MAX_PEOPLE_PER_FLOOR] = { 0,2,4,6,8 };
+    f2.removePeople(indicesToRemove, 5);
+    f2.prettyPrintFloorLine1(cout);
+    cout << f2.getNumPeople() << endl;
+
+
+
+
+
+
+
+
 }
-// write test functions here

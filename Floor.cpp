@@ -31,7 +31,7 @@ int Floor::tick(int currentTime) {
 	}
 	// Remove people who exploded with anger
 	removePeople(indicesToRemove, count);
-    return 0;
+    return count;
 }
 
 void Floor::addPerson(Person newPerson, int request) {
@@ -43,41 +43,41 @@ void Floor::addPerson(Person newPerson, int request) {
 	// If target floor is above current floor
 	if (request > 0) {
 		hasUpRequest = true;
-		hasDownRequest = false;
 	}
 	// If target floor is below current floor
 	else {
-		hasUpRequest = false;
 		hasDownRequest = true;
 	}
 }
 
 void Floor::removePeople(const int indicesToRemove[MAX_PEOPLE_PER_FLOOR],
                          int numPeopleToRemove) {
-	// Place holder array for indices to Remove
-	int targetToRemove[MAX_PEOPLE_PER_FLOOR]; 
-	//Copy values into the place holder
-	for (int i = 0; i < numPeopleToRemove; ++i) {
-		targetToRemove[i] = indicesToRemove[i];
-	}
-	// Sort the place holder 
-	sort(targetToRemove, targetToRemove + numPeopleToRemove);
 
-
-	for (int i = 0; i < MAX_PEOPLE_PER_FLOOR; i++) {
-		if (i == targetToRemove[i]) {
-			for (int j = i; j < MAX_PEOPLE_PER_FLOOR - 1; j++) {
-				people[j] = people[j + 1];
-			}
-			for (int k = 0; k < numPeopleToRemove; k++) {
-				targetToRemove[k] = targetToRemove[k] - 1;
+	Person newPeople[MAX_PEOPLE_PER_FLOOR];
+	int h = 0;
+	for (int i = 0; i < numPeople; i++) {
+		bool remove = false;
+		for (int j = 0; j < numPeopleToRemove; j++) {
+			if (indicesToRemove[j] == i) {
+				remove = true;
 			}
 		}
+		if (!remove) {
+			newPeople[h] = people[i];
+			h++;
+		}
 	}
-
+	for (int k = 0; k < MAX_PEOPLE_PER_FLOOR; k++) {
+		people[k] = newPeople[k];
+	}
+	numPeople = h;
+	resetRequests();
+	
 }
 
 void Floor::resetRequests() {
+	hasUpRequest = false;
+	hasDownRequest = false;
 	for (int i = 0; i < numPeople; i++) {
 		if (people[i].getTargetFloor() > people[i].getCurrentFloor()) {
 			hasUpRequest = true;

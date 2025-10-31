@@ -4,7 +4,7 @@
  * Elevator.cpp
  * Project UID 848fee0125dbb5eb53ed294f20dbef81
  *
- * <#Names#>
+ * < Colby Schram, >
  * <#Uniqnames#>
  *
  * Final Project - Elevators
@@ -20,16 +20,23 @@ void Elevator::tick(int currentTime) {
         // If target floor is above current floor
         if (targetFloor > currentFloor) {
             currentFloor += 1;
+            if (targetFloor == currentFloor) {
+                servicing = false;
+            }
         }
         // If target floor is below current floor
         else if (currentFloor > targetFloor) {
             currentFloor -= 1;
+            if (targetFloor == currentFloor) {
+                servicing = false;
+            }
         }
         // If current floor is the target floor
         else {
             servicing = false;
         }
     }
+    return;
 }
 
 void Elevator::serviceRequest(int floorNum) {
