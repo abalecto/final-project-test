@@ -4,8 +4,8 @@
  * Elevator.cpp
  * Project UID 848fee0125dbb5eb53ed294f20dbef81
  *
- * < Colby Schram, >
- * <#Uniqnames#>
+ * < Colby Schram, Sean Mayer, Abigail Bacot, and Uyo Nakano >
+ * < colbs, seanmay, abibacot, and unakano >
  *
  * Final Project - Elevators
  */

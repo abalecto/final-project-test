@@ -4,8 +4,8 @@
  * Floor.cpp
  * Project UID 848fee0125dbb5eb53ed294f20dbef81
  *
- * <#Names#>
- * <#Uniqnames#>
+ * < Colby Schram, Sean Mayer, Abigail Bacot, and Uyo Nakano >
+ * < colbs, seanmay, abibacot, and unakano >
  *
  * Final Project - Elevators
  */
@@ -52,9 +52,10 @@ void Floor::addPerson(Person newPerson, int request) {
 
 void Floor::removePeople(const int indicesToRemove[MAX_PEOPLE_PER_FLOOR],
                          int numPeopleToRemove) {
-
+	// Array to copy people
 	Person newPeople[MAX_PEOPLE_PER_FLOOR];
-	int h = 0;
+	int newNumPeople = 0;
+	// Loop that copies people who are not removed to newPerson
 	for (int i = 0; i < numPeople; i++) {
 		bool remove = false;
 		for (int j = 0; j < numPeopleToRemove; j++) {
@@ -63,26 +64,32 @@ void Floor::removePeople(const int indicesToRemove[MAX_PEOPLE_PER_FLOOR],
 			}
 		}
 		if (!remove) {
-			newPeople[h] = people[i];
-			h++;
+			newPeople[newNumPeople] = people[i];
+			newNumPeople++;
 		}
 	}
+	// Copy back to the original people array
 	for (int k = 0; k < MAX_PEOPLE_PER_FLOOR; k++) {
 		people[k] = newPeople[k];
 	}
-	numPeople = h;
+	numPeople = newNumPeople;
 	resetRequests();
 	
 }
 
 void Floor::resetRequests() {
+	// Initialize requests
 	hasUpRequest = false;
 	hasDownRequest = false;
+	// Check everyone on the floor if they have up or down request
 	for (int i = 0; i < numPeople; i++) {
-		if (people[i].getTargetFloor() > people[i].getCurrentFloor()) {
+		int targetFloor = people[i].getTargetFloor();
+		int currentFloor = people[i].getCurrentFloor();
+
+		if (targetFloor > currentFloor) {
 			hasUpRequest = true;
 		}
-		else if (people[i].getTargetFloor() < people[i].getCurrentFloor()) {
+		else if (targetFloor < currentFloor) {
 			hasDownRequest = true;
 		}
 	}
